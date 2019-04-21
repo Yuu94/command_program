@@ -20,7 +20,7 @@ def READ(command):
 
 def EVAL(command):
     if command == 'ls':
-        return ls()
+        return LIST()
 
 def PRINT(result):
     resultLen = len(result)
@@ -38,7 +38,7 @@ def PRINT(result):
         print()
 
 
-def ls():
+def LIST():
     fileList = os.listdir(dir)
     return fileList
 
