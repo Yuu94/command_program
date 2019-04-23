@@ -10,11 +10,16 @@ def main():
     global osName
     osName = os.name
 
+    print('\nHello User!')
+
     while(True):
-        inputData = input('{} CMD> '.format(dir))
+        inputData = input('{} CMD> '.format(dir.split('\\')[-1]))
         command, argument = READ(inputData)
         result = EVAL(command, argument)
-        PRINT(result)
+        if result != 'Error':
+            PRINT(result)
+        else:
+            ERROR("Undefined Command")
 
 def READ(inputData):
     argument = []
@@ -34,12 +39,20 @@ def READ(inputData):
 def EVAL(command, argument):
     if command == 'ls':
         return LIST()
+    elif command == 'dir':
+        return LIST()
     elif command == 'cd':
         return ChangeDirectory(argument, osName)
-    elif command == '':
+    elif command == 'pwd':
+        return PrintWorkingDirectory()
+    elif command == 'help':
+        return HELP()
+    elif command == 'exit':
         return 'exit'
+    elif command == '':
+        return ''
     else:
-        print("Error: Undefined Command")
+        return 'Error'
 
 def PRINT(result):
     if result != 'exit':
@@ -88,11 +101,34 @@ def ChangeDirectory(argument, osName):
     try:
         os.listdir(dir)
     except OSError:
-        print('Error: Undedined "{}" Directory'.format(dir))
+        ERROR('Undedined "{}" Directory.'.format(dir))
         dir = os.getcwd()
+    except:
+        ERROR('Unexpected Error.')
     
     return ''
 
+def PrintWorkingDirectory():
+    return [dir]
+
+
+
+def HELP():
+    print('''-/-/-/-/-/-/-/-/-/-/-HELP-/-/-/-/-/-/-/-/-/-/-
+Command Name|   Description
+-----------------------------------------
+exit        |   command program exit
+help        |   print help
+cd          |   change directory
+ls          |   display current directory
+dir         |   display current directory
+    ''')
+
+    return ''
+
+
+def ERROR(message):
+    print('Error: {}'.format(message))
 
 if __name__ == '__main__':
     main()
