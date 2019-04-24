@@ -16,10 +16,7 @@ def main():
         inputData = input('{} CMD> '.format(dir.split('\\')[-1]))
         command, argument = READ(inputData)
         result = EVAL(command, argument)
-        if result != 'Error':
-            PRINT(result)
-        else:
-            ERROR("Undefined Command")
+        PRINT(result)
 
 def READ(inputData):
     argument = []
@@ -52,7 +49,7 @@ def EVAL(command, argument):
     elif command == '':
         return ''
     else:
-        return 'Error'
+        return ERROR('Undefined Command.')
 
 def PRINT(result):
     if result != 'exit':
@@ -101,10 +98,11 @@ def ChangeDirectory(argument, osName):
     try:
         os.listdir(dir)
     except OSError:
-        ERROR('Undedined "{}" Directory.'.format(dir))
+        # ERROR('Undedined "{}" Directory.'.format(dir))
         dir = os.getcwd()
+        return ERROR('Undedined "{}\\{}" Directory.'.format(dir, argument[0]))
     except:
-        ERROR('Unexpected Error.')
+        return ERROR('Unexpected Error.')
     
     return ''
 
@@ -128,7 +126,7 @@ dir         |   display current directory
 
 
 def ERROR(message):
-    print('Error: {}'.format(message))
+    return ['Error: {}'.format(message)]
 
 if __name__ == '__main__':
     main()
